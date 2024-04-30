@@ -2,23 +2,15 @@ package it.uniroma3.diadia;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class PartitaTest {
-	private Partita partita;
-	private Labirinto labirinto;
-	private Stanza stanzaCasuale;
-
-	@Before
-	public void setUp(){
-		this.labirinto = new Labirinto();
-		this.partita = new Partita(labirinto);
-		this.stanzaCasuale = new Stanza("casuale");
-	}
+	private Labirinto labirinto = new Labirinto();
+	private Partita partita = new Partita(labirinto);
+	private Stanza stanzaCasuale = new Stanza("casuale");
 	
 	@Test
 	public void testGetStanzaCorrente_inizioPartita() {

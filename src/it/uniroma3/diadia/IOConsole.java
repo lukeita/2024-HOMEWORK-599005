@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author docente di POO
  * @version base
  */
-public class IOConsole {
+public class IOConsole implements IO{
 	
 	/**
 	 * Stampa a schermo il messaggio
