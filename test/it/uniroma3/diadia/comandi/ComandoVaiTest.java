@@ -5,32 +5,47 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.*;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 
 public class ComandoVaiTest {
-	private IO io = new IOConsole();
-	private Labirinto l = new Labirinto();
-	private Partita p = new Partita(l);
-	private Comando c = new ComandoVai();
+	private Comando vai = new ComandoVai();
+	private Labirinto monolocale = new LabirintoBuilder()
+			.addStanzaIniziale("salotto")
+			.addStanzaVincente("camera")
+			.addAttrezzo("letto",10)
+			.addAdiacenza("salotto", "camera", "nord")
+			.getLabirinto(); 
+	private Partita partita = new Partita(monolocale);
 	
 	@Before
 	public void setUp() {
-		c.setIo(io);
+		vai.setIo(new IOConsole());
 	}
 
 	@Test
-	public void testEsegui_direzioneNulla() {
-		c.esegui(p);
-		assertEquals("Atrio", p.getStanzaCorrente().getNome());
+	public void testVai_direzioneInesistente() {
+		vai.setParametro("sud");
+		vai.esegui(partita);
+		assertEquals(monolocale.getStanzaIniziale(), partita.getStanzaCorrente());
 	}
 	
 	@Test
-	public void testEsegui_direzioneNonNulla() {
-		c.setParametro("nord");
-		c.esegui(p);
-		assertEquals("Biblioteca", p.getStanzaCorrente().getNome());
+	public void testVai_direzioneEsistente() {
+		vai.setParametro("nord");
+		vai.esegui(partita);
+		assertEquals(monolocale.getStanzaVincente(), partita.getStanzaCorrente());
+	}
+	
+	@Test
+	public void testVai_tornaIndietro() {
+		vai.setParametro("nord");
+		vai.esegui(partita);
+		vai.setParametro("sud");
+		vai.esegui(partita);
+		assertEquals(monolocale.getStanzaIniziale(), partita.getStanzaCorrente());
 	}
 
 }

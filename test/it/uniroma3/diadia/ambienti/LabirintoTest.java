@@ -9,10 +9,10 @@ public class LabirintoTest {
 	
 	@Test
 	public void testGetStanzaIniziale_verificaEsistenzaStanza() {
-		assertNotNull(this.labirinto.getStanzaIniziale());
+		assertNull(this.labirinto.getStanzaIniziale());
 	}
 	
 	public void testGetStanzaVincente_verificaEsistenzaStanza() {
-		assertNotNull(this.labirinto.getStanzaVincente());
+		assertNull(this.labirinto.getStanzaVincente());
 	}
 }

@@ -13,6 +13,33 @@ public class StanzaTest {
 	private Attrezzo secondoAttrezzo = new Attrezzo("secondo", 0);
 
 	@Test
+	public void testAddAttrezzoSingolo() {
+		assertTrue(stanza.addAttrezzo(primoAttrezzo));
+	}
+	
+	@Test
+	public void testAddAttrezzoDuplicato() {
+		stanza.addAttrezzo(primoAttrezzo);
+		assertFalse(stanza.addAttrezzo(primoAttrezzo));
+	}
+
+	@Test
+	public void testHasAttrezzo_stanzaVuota() {
+		assertFalse(stanza.hasAttrezzo("inesistente"));
+	}
+
+	@Test
+	public void testHasAttrezzo_stanzaNonVuota_assente() {
+		assertFalse(stanza.hasAttrezzo("inesistente"));
+	}
+
+	@Test
+	public void testHasAttrezzo_stanzaNonVuota_presente() {
+		stanza.addAttrezzo(primoAttrezzo);
+		assertTrue(stanza.hasAttrezzo("primo"));
+	}
+
+	@Test
 	public void testGetAttrezzo_stanzaVuota() {
 		assertNull(stanza.getAttrezzo("inesistente"));
 	}
@@ -26,22 +53,6 @@ public class StanzaTest {
 	public void testGetAttrezzo_stanzaNonVuota_presente() {
 		stanza.addAttrezzo(primoAttrezzo);
 		assertNotNull(stanza.getAttrezzo("primo"));
-	}
-	
-	@Test
-	public void testHasAttrezzo_stanzaVuota() {
-		assertFalse(stanza.hasAttrezzo("inesistente"));
-	}
-	
-	@Test
-	public void testHasAttrezzo_stanzaNonVuota_assente() {
-		assertFalse(stanza.hasAttrezzo("inesistente"));
-	}
-	
-	@Test
-	public void testHasAttrezzo_stanzaNonVuota_presente() {
-		stanza.addAttrezzo(primoAttrezzo);
-		assertTrue(stanza.hasAttrezzo("primo"));
 	}
 	
 	@Test
@@ -79,13 +90,6 @@ public class StanzaTest {
 	}
 	
 	@Test
-	public void testAddAttrezzo_stanzaPiena() {
-		for(int i=0; i<11; i++)
-			stanza.addAttrezzo(primoAttrezzo);
-		assertFalse(stanza.addAttrezzo(primoAttrezzo));
-	}
-	
-	@Test
 	public void testGetStanzaAdiacente_stanzaScollegata() {
 		assertNull(stanza.getStanzaAdiacente("inesistente"));
 	}
@@ -104,6 +108,6 @@ public class StanzaTest {
 	@Test
 	public void testGetDirezioni_conStanzaAdiacente() {
 		stanza.impostaStanzaAdiacente("nord", adiacente);
-		assertEquals("nord", stanza.getDirezioni()[0]);
+		assertTrue(stanza.getDirezioni().contains("nord"));
 	}
 }
