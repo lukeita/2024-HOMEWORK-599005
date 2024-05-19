@@ -29,6 +29,10 @@ public class Attrezzo {
 		this.peso = peso;
 		this.nome = nome;
 	}
+	
+	public Attrezzo(String nome) {
+		this(nome, 0);
+	}
 
 	/**
 	 * Restituisce il nome identificatore dell'attrezzo
@@ -51,7 +55,12 @@ public class Attrezzo {
 	 * @return la rappresentazione stringa
 	 */
 	public String toString() {
-		return this.getNome()+" ("+this.getPeso()+"kg)";
+		return this.getNome();
 	}
-
+	
+	@Override
+	public boolean equals(Object o) {
+		Attrezzo that = (Attrezzo)o;
+		return this.getNome().equals(that.getNome());
+	}
 }

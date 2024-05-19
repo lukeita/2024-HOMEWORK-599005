@@ -1,6 +1,9 @@
 package it.uniroma3.diadia.giocatore;
 
+import java.util.*;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.attrezzi.ComparatoreAttrezziPerNome;
+import it.uniroma3.diadia.attrezzi.ComparatoreAttrezziPerPeso;
 
 /**
  * Classe che ha il compito di modellare e gestire l'inventario del giocatore.
@@ -11,10 +14,9 @@ import it.uniroma3.diadia.attrezzi.Attrezzo;
  * @version	base
  */
 public class Borsa {
-	public final static int DEFAULT_PESO_MAX_BORSA = 10;
-	private Attrezzo[] attrezzi;
-	private int numeroAttrezzi;
+	final static private int DEFAULT_PESO_MAX_BORSA = 10; 
 	private int pesoMax;
+	private Map<String,Attrezzo> attrezzi;
 	
 	/**
 	 * Crea la borsa con una sopportazione del peso di default
@@ -23,71 +25,45 @@ public class Borsa {
 		this(DEFAULT_PESO_MAX_BORSA);
 	}
 	
-	/**
-	 * Crea la borsa che ha una capienza di massimo 10 oggetti. Può sopportare un peso massimo 
-	 * equivalente a pesoMax
-	 * @param pesoMax	peso massimo che la borsa può sopportare
-	 */
-	public Borsa(int pesoMax) {
-		this.pesoMax = pesoMax;
-		this.attrezzi = new Attrezzo[10]; // speriamo bastino...
-		this.numeroAttrezzi = 0;
+	public Borsa(int peso) {
+		this.pesoMax = peso;
+		this.attrezzi = new TreeMap<String,Attrezzo>();
 	}
-	
+		
 	/**
-	 * aggiungi un attrezzo all'interno della borsa
-	 * @param attrezzo	attrezzo da aggiungere all'interno della borsa
-	 * @return vero se l'attrezzo è stato aggiunto
+	 * verifica se la borsa è vuota 
+	 * @return vero se la brosa è vuota
 	 */
-	public boolean addAttrezzo(Attrezzo attrezzo) {
-		if (this.getPeso() + attrezzo.getPeso() > this.getPesoMax())
-			return false;
-		if (this.numeroAttrezzi==10)
-			return false;
-		this.attrezzi[this.numeroAttrezzi] = attrezzo;
-		this.numeroAttrezzi++;
-		return true;
+	public boolean isEmpty() {
+		return this.attrezzi.isEmpty();
 	}
-	
-	/**
-	 * Restituisci il peso massimo che può sopportare la borsa
-	 * @return peso massimo che può sopportare la borsa
-	 */
-	public int getPesoMax() {
-		return pesoMax;
-	}
-	
-	/**
-	 * Restituisci l'attrezzo del nome che ho inserito
-	 * @param nomeAttrezzo	nome dell'attrezzo che si deridera cercare
-	 * @return l'oggetto dell'attrezzo cercato, altrimenti null
-	 */
-	public Attrezzo getAttrezzo(String nomeAttrezzo) {
-		Attrezzo a = null;
-		for (int i= 0; i<this.numeroAttrezzi; i++)
-			if (this.attrezzi[i] != null && this.attrezzi[i].getNome().equals(nomeAttrezzo))
-				a = attrezzi[i];
-		return a;
-	}
-	
+
+
 	/**
 	 * Restituisci il peso totale degli oggetti all'interno della borsa
 	 * @return peso totale degli oggetti all'interno della borsa
 	 */
 	public int getPeso() {
 		int peso = 0;
-		for (int i= 0; i<this.attrezzi.length && this.numeroAttrezzi != 0; i++)
-			if(this.attrezzi[i] != null)
-				peso += this.attrezzi[i].getPeso();
+		for(Attrezzo a: this.attrezzi.values())
+			peso += a.getPeso();
 		return peso;
 	}
-	
+
+	public int getPesoMax() {
+		return this.pesoMax;
+	}
+
 	/**
-	 * verifica se la borsa è vuota 
-	 * @return vero se la brosa è vuota
+	 * aggiungi un attrezzo all'interno della borsa
+	 * @param attrezzo	attrezzo da aggiungere all'interno della borsa
+	 * @return vero se l'attrezzo è stato aggiunto
 	 */
-	public boolean isEmpty() {
-		return this.numeroAttrezzi == 0;
+	public boolean addAttrezzo(Attrezzo attrezzo) {
+		if((this.getPeso() + attrezzo.getPeso()) > this.getPesoMax())
+			return false;
+		this.attrezzi.put(attrezzo.getNome(), attrezzo);
+		return true;
 	}
 	
 	/**
@@ -96,7 +72,18 @@ public class Borsa {
 	 * @return vero se l'attrezzo è presente all'interno della borsa
 	 */
 	public boolean hasAttrezzo(String nomeAttrezzo) {
-		return this.getAttrezzo(nomeAttrezzo)!=null;
+		if(this.isEmpty())
+			return false;
+		return this.attrezzi.containsKey(nomeAttrezzo);
+	}
+
+	/**
+	 * Restituisci l'attrezzo del nome che ho inserito
+	 * @param nomeAttrezzo	nome dell'attrezzo che si deridera cercare
+	 * @return l'oggetto dell'attrezzo cercato, altrimenti null
+	 */
+	public Attrezzo getAttrezzo(String aCercato) {
+		return this.attrezzi.get(aCercato);
 	}
 	
 	/**
@@ -105,24 +92,46 @@ public class Borsa {
 	 * @return attrezzo rimosso, altrimenti null
 	 */
 	public Attrezzo removeAttrezzo(String nomeAttrezzo) {
-		Attrezzo a = null;
-		if(this.hasAttrezzo(nomeAttrezzo))
-			for(int i=0; i<this.attrezzi.length; i++)
-				if(this.attrezzi[i] != null && this.attrezzi[i].getNome().equals(nomeAttrezzo)) {
-					a = this.attrezzi[i];
-					this.attrezzi[i] = null;
-					this.numeroAttrezzi--;
-					break;
-				}
-		return a;
+		return this.attrezzi.remove(nomeAttrezzo);
 	}
 	
+	List<Attrezzo> getContenutoOrdinatoPerPeso(){
+		List<Attrezzo> ordinata = new ArrayList<>(this.attrezzi.values());
+		Collections.sort(ordinata, new ComparatoreAttrezziPerPeso());
+		return ordinata;
+	}
+	
+	SortedSet<Attrezzo> getContenutoOrdinatoPerNome(){
+		SortedSet<Attrezzo> ordinata = new TreeSet<>(new ComparatoreAttrezziPerNome());
+		ordinata.addAll(this.attrezzi.values());
+		return ordinata;
+	}
+	
+	SortedSet<Attrezzo> getSortedSetOrdinatoPerPeso(){
+		SortedSet<Attrezzo> ordinata = new TreeSet<>(new ComparatoreAttrezziPerPeso());
+		ordinata.addAll(this.attrezzi.values());
+		return ordinata;
+	}
+	
+	Map<Integer,Set<Attrezzo>> getContenutoRaggruppatoPerPeso(){
+		Map<Integer, Set<Attrezzo>> gruppo = new HashMap<>();
+		for(Attrezzo a : this.attrezzi.values()) {
+			if(gruppo.containsKey(a.getPeso())) 
+				gruppo.get(a.getPeso()).add(a);
+			else {
+				Set<Attrezzo> set = new TreeSet<>(new ComparatoreAttrezziPerNome());
+				set.add(a);
+				gruppo.put(a.getPeso(), set);
+			}
+		}
+		return gruppo;
+	}
+
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		if (!this.isEmpty()) {
-			s.append("Contenuto borsa ("+this.getPeso()+"kg/"+this.getPesoMax()+"kg): ");
-			for (int i= 0; i<this.numeroAttrezzi; i++)
-				s.append(attrezzi[i].toString()+" ");
+			s.append("Contenuto borsa ("+this.getPeso()+"kg/" + this.getPesoMax()+"kg): \n");
+			s.append(this.getContenutoRaggruppatoPerPeso().toString() + "\n");
 		}
 		else
 			s.append("Borsa vuota");

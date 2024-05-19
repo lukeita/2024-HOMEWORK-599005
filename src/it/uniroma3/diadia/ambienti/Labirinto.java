@@ -1,6 +1,9 @@
 package it.uniroma3.diadia.ambienti;
 
-import it.uniroma3.diadia.attrezzi.Attrezzo;
+import java.util.ArrayList;
+import java.util.List;
+
+//import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 /**
  * Classe che modella e gestisce un labrinto che sarà la mappa di gioco.
@@ -13,18 +16,17 @@ import it.uniroma3.diadia.attrezzi.Attrezzo;
 public class Labirinto {
 	private Stanza stanzaIniziale;
 	private Stanza stanzaVincente;
+	private List<String> direzioni;
 	
-	/**
-	 * Crea il Labirinto
-	 */
 	public Labirinto() {
-		init();
+		this.direzioni = new ArrayList<>();
+		direzioni.add("nord");
+		direzioni.add("sud");
+		direzioni.add("ovest");
+		direzioni.add("est");
 	}
 	
-	/**
-	 * Inizializza il labirinto
-	 */
-	private void init() {
+	/*private void init() {
 
     	Attrezzo lanterna = new Attrezzo("lanterna",3);
 		Attrezzo osso = new Attrezzo("osso",1);
@@ -53,7 +55,7 @@ public class Labirinto {
 
         this.stanzaIniziale = atrio;  
 		this.stanzaVincente = biblioteca;
-	}
+	}*/
 	
 	/**
 	 * Restituisce l'entrata del labirinto
@@ -69,5 +71,17 @@ public class Labirinto {
 	 */
 	public Stanza getStanzaVincente() {
 		return this.stanzaVincente;
+	}
+	
+	public void setStanzaIniziale(Stanza stanzaIniziale) {
+		this.stanzaIniziale = stanzaIniziale;
+	}
+	
+	public void setStanzaVincente(Stanza stanzaVincente) {
+		this.stanzaVincente = stanzaVincente;
+	}
+	
+	public List<String> getDirezioni() {
+		return direzioni;
 	}
 }

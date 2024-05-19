@@ -30,14 +30,15 @@ public class Partita {
 	}
     
 
+	public Stanza getStanzaCorrente() {
+		return this.stanzaCorrente;
+	}
+
+
 	public void setStanzaCorrente(Stanza stanzaCorrente) {
 		this.stanzaCorrente = stanzaCorrente;
 	}
 
-	public Stanza getStanzaCorrente() {
-		return this.stanzaCorrente;
-	}
-	
 	/**
 	 * Restituisce vero se e solo se la partita e' stata vinta
 	 * @return vero se partita vinta
@@ -51,21 +52,23 @@ public class Partita {
 	 * @return vero se partita finita
 	 */
 	public boolean isFinita() {
-		return finita || vinta() || (this.giocatore.getCfu() == 0);
+		return finita || vinta() || this.giocatoreIsMorto();
 	}
+
 
 	/**
 	 * Imposta la partita come finita
 	 */
 	public void setFinita() {
 		this.finita = true;
-	}	
-	
+	}
+
+
 	public Giocatore getGiocatore() {
 		return this.giocatore;
 	}
 	
-	public boolean giocatoreIsVivo() {
+	public boolean giocatoreIsMorto() {
 		return this.getGiocatore().getCfu() == 0;
 	}
 }
