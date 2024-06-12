@@ -49,13 +49,18 @@ public class Attrezzo {
 	public int getPeso() {
 		return this.peso;
 	}
+	
+	public void setPeso(int peso) {
+		this.peso = peso;
+	}
 
 	/**
 	 * Restituisce una rappresentazione stringa di questo attrezzo
 	 * @return la rappresentazione stringa
 	 */
+	@Override
 	public String toString() {
-		return this.getNome();
+		return this.getNome() + ":" + this.getPeso();
 	}
 	
 	@Override

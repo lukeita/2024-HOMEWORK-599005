@@ -2,25 +2,26 @@ package it.uniroma3.diadia.comandi;
 
 import static org.junit.Assert.*;
 
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 
 public class ComandoPrendiTest {
-	private Comando vai = new ComandoVai();
-	private Comando prendi = new ComandoPrendi();
+	private AbstractComando vai = new ComandoVai();
+	private AbstractComando prendi = new ComandoPrendi();
 	private Labirinto bilocale;
 	private Partita p;
 	@Before
 	public void setUp() throws Exception {
-		vai.setIo(new IOConsole());
-		prendi.setIo(new IOConsole());
+		vai.setIo(new IOConsole(new Scanner(System.in)));
+		prendi.setIo(new IOConsole(new Scanner(System.in)));
 		
-		this.bilocale = new LabirintoBuilder()
+		this.bilocale = Labirinto.newBuilder()
 				.addStanzaIniziale("salotto")
 				.addStanzaVincente("camera")
 				.addAttrezzo("letto",10)

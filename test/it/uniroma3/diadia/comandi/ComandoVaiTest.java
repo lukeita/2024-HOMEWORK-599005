@@ -2,17 +2,18 @@ package it.uniroma3.diadia.comandi;
 
 import static org.junit.Assert.*;
 
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 
 public class ComandoVaiTest {
-	private Comando vai = new ComandoVai();
-	private Labirinto monolocale = new LabirintoBuilder()
+	private AbstractComando vai = new ComandoVai();
+	private Labirinto monolocale = Labirinto.newBuilder()
 			.addStanzaIniziale("salotto")
 			.addStanzaVincente("camera")
 			.addAttrezzo("letto",10)
@@ -22,21 +23,21 @@ public class ComandoVaiTest {
 	
 	@Before
 	public void setUp() {
-		vai.setIo(new IOConsole());
+		vai.setIo(new IOConsole(new Scanner(System.in)));
 	}
 
 	@Test
 	public void testVai_direzioneInesistente() {
 		vai.setParametro("sud");
 		vai.esegui(partita);
-		assertEquals(monolocale.getStanzaIniziale(), partita.getStanzaCorrente());
+		assertSame(monolocale.getStanzaIniziale(), partita.getStanzaCorrente());
 	}
 	
 	@Test
 	public void testVai_direzioneEsistente() {
 		vai.setParametro("nord");
 		vai.esegui(partita);
-		assertEquals(monolocale.getStanzaVincente(), partita.getStanzaCorrente());
+		assertSame(monolocale.getStanzaVincente(), partita.getStanzaCorrente());
 	}
 	
 	@Test
@@ -45,7 +46,7 @@ public class ComandoVaiTest {
 		vai.esegui(partita);
 		vai.setParametro("sud");
 		vai.esegui(partita);
-		assertEquals(monolocale.getStanzaIniziale(), partita.getStanzaCorrente());
+		assertSame(monolocale.getStanzaIniziale(), partita.getStanzaCorrente());
 	}
 
 }

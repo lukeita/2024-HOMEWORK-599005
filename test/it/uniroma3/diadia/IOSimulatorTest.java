@@ -2,13 +2,13 @@ package it.uniroma3.diadia;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 
 public class IOSimulatorTest {
 	private DiaDia gioco;
@@ -17,7 +17,7 @@ public class IOSimulatorTest {
 	
 	@Test
 	public void testSimulazioneBilocale() {
-		this.labirinto = new LabirintoBuilder()
+		this.labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("salotto")
 				.addStanzaVincente("camera")
 				.addAdiacenza("salotto", "camera", "nord")
@@ -37,7 +37,7 @@ public class IOSimulatorTest {
 	
 	@Test
 	public void testSimulazioneHomeWork3() {
-		this.labirinto = new LabirintoBuilder()
+		this.labirinto = Labirinto.newBuilder()
 				.addStanzaIniziale("stanza iniziale")
 				.addAttrezzo("aicrot", 2)
 				.addStanzaMagica("stanza magica", 2)
@@ -75,7 +75,22 @@ public class IOSimulatorTest {
 		
 		this.gioco = new DiaDia(labirinto, io);
 		this.gioco.gioca();
-		assertEquals("Hai vinto!", this.io.getOutput().get(this.io.getOutput().size()-1));
+		assertEquals("Hai esaurito i CFU...", this.io.getOutput().get(this.io.getOutput().size()-1));
+	}
+	
+	@Test
+	public void testSimulazione1() throws FileNotFoundException, FormatoFileNonValidoException {
+		labirinto = Labirinto.newBuilder("resources/labirinto1.txt").getLabirinto();
+		List<String> in = new ArrayList<>();
+		in.add("prendi pinza");
+		in.add("vai sud");
+		in.add("prendi martello");
+		in.add("vai sud");
+		
+		io = new IOSimulator(in);
+		gioco = new DiaDia(labirinto, io);
+		gioco.gioca();
+		assertEquals("Hai vinto!", io.getOutput().get(io.getOutput().size()-1));
 	}
 
 }

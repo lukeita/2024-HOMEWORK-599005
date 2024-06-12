@@ -3,9 +3,9 @@ package it.uniroma3.diadia.ambienti;
 public class StanzaBuia extends Stanza {
 	String luce;
 
-	public StanzaBuia(String nome, String attrezzoIlluminante) {
+	public StanzaBuia(String nome, String luce) {
 		super(nome);
-		this.luce = attrezzoIlluminante;
+		this.luce = luce;
 	}
 	
 	@Override

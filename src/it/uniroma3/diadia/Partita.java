@@ -69,6 +69,6 @@ public class Partita {
 	}
 	
 	public boolean giocatoreIsMorto() {
-		return this.getGiocatore().getCfu() == 0;
+		return this.getGiocatore().getCfu() <= 0;
 	}
 }

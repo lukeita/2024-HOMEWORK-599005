@@ -1,5 +1,7 @@
 package it.uniroma3.diadia.giocatore;
 
+import it.uniroma3.diadia.Configuratore;
+
 /**
  * Classe che gestisce i cfu e memorizza gli attrezzi nella borsa
  * 
@@ -8,7 +10,7 @@ package it.uniroma3.diadia.giocatore;
  * @version	0.1
  */
 public class Giocatore {	
-	static final private int CFU_INIZIALI = 20;
+	static final private int CFU_INIZIALI = Configuratore.getCfuIniziali();
 	private int cfu;
 	private Borsa borsa;
 	

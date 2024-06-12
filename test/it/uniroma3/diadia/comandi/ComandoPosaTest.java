@@ -2,24 +2,25 @@ package it.uniroma3.diadia.comandi;
 
 import static org.junit.Assert.*;
 
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class ComandoPosaTest {
-	Comando posa = new ComandoPosa();
+	AbstractComando posa = new ComandoPosa();
 	Labirinto monolocale;
 	Partita p;
 	
 	@Before
 	public void setUp() {
-		this.posa.setIo(new IOConsole());
-		this.monolocale = new LabirintoBuilder()
+		this.posa.setIo(new IOConsole(new Scanner(System.in)));
+		this.monolocale = Labirinto.newBuilder()
 				.addStanzaIniziale("salotto")
 				.addStanzaVincente("salotto")
 				.getLabirinto();

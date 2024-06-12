@@ -11,7 +11,7 @@ public class StanzaTest {
 	private Stanza adiacente = new Stanza("adiacente");
 	private Attrezzo primoAttrezzo = new Attrezzo("primo", 0);
 	private Attrezzo secondoAttrezzo = new Attrezzo("secondo", 0);
-
+	
 	@Test
 	public void testAddAttrezzoSingolo() {
 		assertTrue(stanza.addAttrezzo(primoAttrezzo));
@@ -52,7 +52,7 @@ public class StanzaTest {
 	@Test 
 	public void testGetAttrezzo_stanzaNonVuota_presente() {
 		stanza.addAttrezzo(primoAttrezzo);
-		assertNotNull(stanza.getAttrezzo("primo"));
+		assertSame(primoAttrezzo,stanza.getAttrezzo("primo"));
 	}
 	
 	@Test
@@ -97,17 +97,12 @@ public class StanzaTest {
 	@Test
 	public void testGetStanzaAdiacente_stanzaCollegata() {
 		stanza.impostaStanzaAdiacente("nord", adiacente);
-		assertNotNull(stanza.getStanzaAdiacente("nord"));
-	}
-	
-	@Test
-	public void testGetDirezioni_senzaStanzaAdiacente() {
-		assertNotNull(stanza.getDirezioni());
+		assertSame(adiacente,stanza.getStanzaAdiacente("nord"));
 	}
 	
 	@Test
 	public void testGetDirezioni_conStanzaAdiacente() {
 		stanza.impostaStanzaAdiacente("nord", adiacente);
-		assertTrue(stanza.getDirezioni().contains("nord"));
+		assertTrue(stanza.getDirezioni().contains(Direzione.valueOf("nord")));
 	}
 }

@@ -8,7 +8,7 @@ import it.uniroma3.diadia.attrezzi.ComparatoreAttrezziPerNome;
 import it.uniroma3.diadia.attrezzi.ComparatoreAttrezziPerPeso;
 
 public class BorsaTest {
-	private Borsa borsaDefault = new Borsa();
+	private Borsa borsaDefault = new Borsa(10);
 	private Borsa borsaMax = new Borsa(30);
 	private Attrezzo piombo = new Attrezzo("piombo", 10);
 	private Attrezzo piuma = new Attrezzo("piuma", 1);

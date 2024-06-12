@@ -1,10 +1,11 @@
 package it.uniroma3.diadia;
 
+import java.util.Scanner;
+
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
-import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.AbstractComando;
 import it.uniroma3.diadia.comandi.FabbricaDiComandi;
-import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiRiflessiva;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -20,21 +21,17 @@ import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
 
 public class DiaDia {
 
-	static final private String MESSAGGIO_BENVENUTO = ""+
-			"Ti trovi nell'Universita', ma oggi e' diversa dal solito...\n" +
-			"Meglio andare al piu' presto in biblioteca a studiare. Ma dov'e'?\n"+
-			"I locali sono popolati da strani personaggi, " +
-			"alcuni amici, altri... chissa!\n"+
-			"Ci sono attrezzi che potrebbero servirti nell'impresa:\n"+
-			"puoi raccoglierli, usarli, posarli quando ti sembrano inutili\n" +
-			"o regalarli se pensi che possano ingraziarti qualcuno.\n\n"+
-			"Per conoscere le istruzioni usa il comando 'aiuto'.";
+	static final private String MESSAGGIO_BENVENUTO = Configuratore.getMessaggioBenvenuto();
 
 	private Partita partita;
 	private IO io;
 	
 	public DiaDia(Labirinto labirinto, IO console) {
 		this.partita = new Partita(labirinto);
+		this.io = console;
+	}
+	
+	public DiaDia(IO console){
 		this.io = console;
 	}
 
@@ -53,8 +50,8 @@ public class DiaDia {
 	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
 	 */
 	private boolean processaIstruzione(String istruzione) {
-		Comando comandoDaEseguire;
-		FabbricaDiComandi factory = new FabbricaDiComandiFisarmonica(this.io);
+		AbstractComando comandoDaEseguire;
+		FabbricaDiComandi factory = new FabbricaDiComandiRiflessiva(this.io);
 		
 		comandoDaEseguire = factory.costruisciComando(istruzione);
 		comandoDaEseguire.esegui(this.partita);
@@ -67,15 +64,12 @@ public class DiaDia {
 	}
 
 
-	public static void main(String[] argc) {
-		IO io = new IOConsole();
-		Labirinto labirinto = new LabirintoBuilder()
-				.addStanzaIniziale("LabCampusOne")
-				.addStanzaVincente("Biblioteca")
-				.addAdiacenza("LabCampusOne", "Biblioteca", "ovest")
-				.getLabirinto();
-		
+	public static void main(String[] argc) throws Exception {
+		Scanner scanner = new Scanner(System.in);
+		IO io = new IOConsole(scanner);
+		Labirinto labirinto = Labirinto.newBuilder("/livelli/labirinto1.txt").getLabirinto();
 		DiaDia gioco = new DiaDia(labirinto, io);
 		gioco.gioca();
+		scanner.close();
 	}
 }

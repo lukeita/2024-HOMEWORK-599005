@@ -9,7 +9,7 @@ public class GiocatoreTest {
 
 	@Test
 	public void testGetCfu_cfuIniziali() {
-		assertEquals(20, this.giocatore.getCfu());
+		assertEquals(10, this.giocatore.getCfu());
 	}
 	
 	@Test

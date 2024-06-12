@@ -9,19 +9,17 @@ import java.util.Scanner;
  * @version base
  */
 public class IOConsole implements IO{
+	private Scanner scannerDiLinee;
 	
-	/**
-	 * Stampa a schermo il messaggio
-	 * @param msg	messaggio da stampare a schermo
-	 */
+	public IOConsole(Scanner scanner) {
+		this.scannerDiLinee = scanner;
+	}
+	
 	public void mostraMessaggio(String msg) {
 		System.out.println(msg);
 	}
 	
 	public String leggiRiga() {
-		Scanner scannerDiLinee = new Scanner(System.in);
-		String riga = scannerDiLinee.nextLine();
-		//scannerDiLinee.close();							per adesso questa riga è omessa
-		return riga;
+		return scannerDiLinee.nextLine();
 	}
 }
